@@ -29,7 +29,23 @@
  # Database içindeki "cron_schedules" tablosunda ilk 2 kaydın
  # "name" bilgisini doğrulayınız
 
-SELECT name FROM cron_schedules LIMIT 2 ;]]></console>
+SELECT name FROM cron_schedules LIMIT 2 ;
+
+# "users" tablosunda sondan bir önceki harfi e olan
+# "usernamelerin" "mobile" numarasını update ediniz
+
+UPDATE users SET mobile = 11111 WHERE username LIKE '%e_';
+
+SELECT * FROM users WHERE username LIKE '%e_';
+
+UPDATE users SET mobile = ? WHERE username LIKE ?;
+
+# Database üzerinde "device_tokens" tablosuna 
+# istenen veriyi tek sorguda ekleyiniz.
+
+SELECT * FROM device_tokens;
+
+INSERT INTO device_tokens (id, user_id, is_app, token)VALUES(8,4,1,'Token');]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">

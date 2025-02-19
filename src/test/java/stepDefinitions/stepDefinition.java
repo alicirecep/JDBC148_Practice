@@ -17,6 +17,8 @@ public class stepDefinition {
 	Statement statement;
 	ResultSet resultSet;
 
+	PreparedStatement preparedStatement;
+	int etkilenenSatirSayisi;
 	String QUERY;
 	QueryManage queryManage = new QueryManage();
 
@@ -107,8 +109,68 @@ public class stepDefinition {
 
 
 
+// ************** UPDATE **********************
+
+	@Given("Database ile baglanti kurulur.")
+	public void database_ile_baglanti_kurulur() {
+
+		JDBCReusableMethods.createConnection();
+
+	}
+	@Given("\\(users) Update sorgusu hazirlanir ve calistirilir.")
+	public void users_update_sorgusu_hazirlanir_ve_calistirilir() throws SQLException {
+
+		QUERY = queryManage.getUsersMobileUpdateQuery();
+		preparedStatement = JDBCReusableMethods.getConnection().prepareStatement(QUERY);
+
+		// UPDATE users SET mobile = ? WHERE username LIKE ?;
+
+		preparedStatement.setString(1, "555555");
+		preparedStatement.setString(2, "%e_");
+		etkilenenSatirSayisi =  preparedStatement.executeUpdate();
 
 
+	}
+	@Given("\\(users) sorgu sonuclari dogrulanir.")
+	public void users_sorgu_sonuclari_dogrulanir() {
+
+		int expectedResult = 5;
+		System.out.println(etkilenenSatirSayisi);
+		assertEquals( etkilenenSatirSayisi, expectedResult);
+
+	}
+	@Given("database baglantisi sonlandirilir.")
+	public void database_baglantisi_sonlandirilir() {
+
+		JDBCReusableMethods.closeConnection();
+
+	}
+
+// ********** INSERT **********
+
+	@Given("\\(device_tokens) Insert sorgusu hazirlanir ve calistirilir.")
+	public void device_tokens_ınsert_sorgusu_hazirlanir_ve_calistirilir() throws SQLException {
+
+		QUERY = queryManage.getDeviceTokensInsertQuery();
+		preparedStatement =JDBCReusableMethods.getConnection().prepareStatement(QUERY);
+
+		// INSERT INTO device_tokens (id, user_id, is_app, token)VALUES(?,?,?,?);
+		preparedStatement.setInt(1, 7);
+		preparedStatement.setInt(2, 3);
+		preparedStatement.setInt(3, 2);
+		preparedStatement.setString(4,"NewToken");
+
+		etkilenenSatirSayisi = preparedStatement.executeUpdate();
+
+	}
+	@Given("\\(device_tokens) sorgu sonuclari dogrulanir.")
+	public void device_tokens_sorgu_sonuclari_dogrulanir() {
+
+		int expectedResult = 1;
+		System.out.println(etkilenenSatirSayisi);
+		assertEquals(etkilenenSatirSayisi, expectedResult);
+
+	}
 
 
 }
